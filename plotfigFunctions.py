@@ -19,31 +19,40 @@ def plotFunc(var, lat, lon):
     cb = map.colorbar(precip,"right",size="5%")#,ticks=ticks)
     return
 
-def makeFig(ds_list, scenList, varName):
+def makeFig(ds_list, scenList, varList):
     N = len(scenList)
     if N>4:
         print("Can't be more than 4 datasets in ds_list")
         return
-    fig = plt.figure()
+    fig = plt.figure(1)
     for n in range(0,N,1):
-        if N==1:
-            ax1 = fig.add_subplot(1,1,1)
-        elif N==2:
-            ax1 = fig.add_subplot(1,2,n+1)
-        elif N==3:
-            ax1 = fig.add_subplot(2,2,n+1)
-        else: #N=4
-            ax1 = fig.add_subplot(2,2,n+1)
+        varName = varList[n]
         scen = scenList[n]
         ds = ds_list[n]
         var = ds[varName]
+        unit = var.attrs["units"]
+        if N==0:
+            ax1 = fig.add_subplot(1,1,1)
+            ax1.set_title(varName +", "+scen + " " + "["+unit+"]")
+        elif N==1:
+            ax1 = fig.add_subplot(1,2,n+1)
+            ax1.set_title(varName +", "+scen + " " + "["+unit+"]")
+        elif N==2:
+            ax1 = fig.add_subplot(2,2,n+1)
+            ax1.set_title(varName +", "+scen + " " + "["+unit+"]")
+        else: #N=3
+            ax1 = fig.add_subplot(2,2,n+1)
+            ax1.set_title(varName +", "+scen + " " + "["+unit+"]")
         var = var[0,:,:]
-        var = var-273.15
+        var = var
         lat = ds["lat"]
         lon = ds["lon"]
         plotFunc(var,lat,lon)
 
-
-    fig.savefig("tasPlot.png")
-
+    fig.tight_layout()
+    fig.subplots_adjust(hspace=None)
+    fig.set_figheight(5)
+    fig.set_figwidth(10)
+    fig.savefig("PlotNew.png")
+    
     return
