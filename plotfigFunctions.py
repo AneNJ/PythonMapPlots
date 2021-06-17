@@ -14,7 +14,7 @@ def plotFunc(var, lat, lon):
     map.drawcountries()
     lons,lats=np.meshgrid(lon,lat)
     x,y = map(lons,lats)
-    precip = map.contourf(x,y,var,30,cmap=cm.viridis_r)#, vmin=0,vmax=32)
+    precip = map.contourf(x,y,var,30,cmap=cm.viridis_r)# , vmin=0,vmax=32)
     #  ticks = [0,5,10,15,20,25,30]
     cb = map.colorbar(precip,"right",size="5%")#,ticks=ticks)
     return
